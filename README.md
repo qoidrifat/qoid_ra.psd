@@ -1,0 +1,1 @@
+# qoid_ra.psd
