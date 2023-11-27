@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Klasifikasi Audio Menggunakan Standart Deviasi, Skewness dan Kurtosis &#8212; My sample book</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '210411100160_Zero_Crossing_Rate';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Klasifikasi 2800 Data Audio Torronto" href="21_160_Pertemuan4.html" />
+    <link rel="prev" title="Klasifikasi Data Audio Menggunakan Zero Crossing Rate" href="Zero_Crossing_Rate_21_160_Qoid_Rif%27at.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
+  
+  
+  </a></div>
+  <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+<div class="bd-toc-item navbar-nav active">
+  
+  <ul class="nav bd-sidenav bd-sidenav__home-link">
+      <li class="toctree-l1 current active">
+          <a class="reference internal" href="intro.html">
+              Welcome to your Jupyter Book
+          </a>
+      </li>
+  </ul>
+  <ul class="nav bd-sidenav">
+
+    <li class="toctree-l1"><a class="reference internal" href="Mengumpulkan_dan_Eksplorasi_Data.html">Mengumpulkan dan Eksplorasi Data Audio</a></li>
+    <li class="toctree-l1"><a class="reference internal" href="Zero_Crossing_Rate_21-160.html">Klasifikasi Data Audio Menggunakan Zero Crossing Rate</a></li>
+    <li class="toctree-l1"><a class="reference internal" href="21-160_Zero_Crossing_Rate.html">Klasifikasi Audio Menggunakan Standart Deviasi, Skewness dan Kurtosis</a></li>
+    <li class="toctree-l1"><a class="reference internal" href="21_160_Pertemuan4.html">Klasifikasi 2800 Data Audio Torronto</a></li>
+    <li class="toctree-l1"><a class="reference internal" href="Revisi_Project_2_UCI.html">Analisis Wholesale Customers Datasets</a></li>
+
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F210411100160_Zero_Crossing_Rate.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/210411100160_Zero_Crossing_Rate.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Klasifikasi Audio Menggunakan Standart Deviasi, Skewness dan Kurtosis</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="klasifikasi-audio-menggunakan-standart-deviasi-skewness-dan-kurtosis">
+<h1>Klasifikasi Audio Menggunakan Standart Deviasi, Skewness dan Kurtosis<a class="headerlink" href="#klasifikasi-audio-menggunakan-standart-deviasi-skewness-dan-kurtosis" title="Permalink to this heading">#</a></h1>
+<p>Nama : Qoid Rif’at</p>
+<p>NIM : 210411100160</p>
+<p>Kelas : Proyek Sains Data (A)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">librosa</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: librosa in /usr/local/lib/python3.10/dist-packages (0.10.1)
+Requirement already satisfied: audioread&gt;=2.1.9 in /usr/local/lib/python3.10/dist-packages (from librosa) (3.0.1)
+Requirement already satisfied: numpy!=1.22.0,!=1.22.1,!=1.22.2,&gt;=1.20.3 in /usr/local/lib/python3.10/dist-packages (from librosa) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.2.0 in /usr/local/lib/python3.10/dist-packages (from librosa) (1.11.3)
+Requirement already satisfied: scikit-learn&gt;=0.20.0 in /usr/local/lib/python3.10/dist-packages (from librosa) (1.2.2)
+Requirement already satisfied: joblib&gt;=0.14 in /usr/local/lib/python3.10/dist-packages (from librosa) (1.3.2)
+Requirement already satisfied: decorator&gt;=4.3.0 in /usr/local/lib/python3.10/dist-packages (from librosa) (4.4.2)
+Requirement already satisfied: numba&gt;=0.51.0 in /usr/local/lib/python3.10/dist-packages (from librosa) (0.58.1)
+Requirement already satisfied: soundfile&gt;=0.12.1 in /usr/local/lib/python3.10/dist-packages (from librosa) (0.12.1)
+Requirement already satisfied: pooch&gt;=1.0 in /usr/local/lib/python3.10/dist-packages (from librosa) (1.8.0)
+Requirement already satisfied: soxr&gt;=0.3.2 in /usr/local/lib/python3.10/dist-packages (from librosa) (0.3.7)
+Requirement already satisfied: typing-extensions&gt;=4.1.1 in /usr/local/lib/python3.10/dist-packages (from librosa) (4.5.0)
+Requirement already satisfied: lazy-loader&gt;=0.1 in /usr/local/lib/python3.10/dist-packages (from librosa) (0.3)
+Requirement already satisfied: msgpack&gt;=1.0 in /usr/local/lib/python3.10/dist-packages (from librosa) (1.0.7)
+Requirement already satisfied: llvmlite&lt;0.42,&gt;=0.41.0dev0 in /usr/local/lib/python3.10/dist-packages (from numba&gt;=0.51.0-&gt;librosa) (0.41.1)
+Requirement already satisfied: platformdirs&gt;=2.5.0 in /usr/local/lib/python3.10/dist-packages (from pooch&gt;=1.0-&gt;librosa) (4.0.0)
+Requirement already satisfied: packaging&gt;=20.0 in /usr/local/lib/python3.10/dist-packages (from pooch&gt;=1.0-&gt;librosa) (23.2)
+Requirement already satisfied: requests&gt;=2.19.0 in /usr/local/lib/python3.10/dist-packages (from pooch&gt;=1.0-&gt;librosa) (2.31.0)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn&gt;=0.20.0-&gt;librosa) (3.2.0)
+Requirement already satisfied: cffi&gt;=1.0 in /usr/local/lib/python3.10/dist-packages (from soundfile&gt;=0.12.1-&gt;librosa) (1.16.0)
+Requirement already satisfied: pycparser in /usr/local/lib/python3.10/dist-packages (from cffi&gt;=1.0-&gt;soundfile&gt;=0.12.1-&gt;librosa) (2.21)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /usr/local/lib/python3.10/dist-packages (from requests&gt;=2.19.0-&gt;pooch&gt;=1.0-&gt;librosa) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /usr/local/lib/python3.10/dist-packages (from requests&gt;=2.19.0-&gt;pooch&gt;=1.0-&gt;librosa) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests&gt;=2.19.0-&gt;pooch&gt;=1.0-&gt;librosa) (2.0.7)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests&gt;=2.19.0-&gt;pooch&gt;=1.0-&gt;librosa) (2023.7.22)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="n">drive</span><span class="o">.</span><span class="n">mount</span> <span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-2-47ccba274b6a&gt;</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">drive</span><span class="o">.</span><span class="n">mount</span> <span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/drive.py</span> in <span class="ni">mount</span><span class="nt">(mountpoint, force_remount, timeout_ms, readonly)</span>
+<span class="g g-Whitespace">    </span><span class="mi">101</span> <span class="k">def</span> <span class="nf">mount</span><span class="p">(</span><span class="n">mountpoint</span><span class="p">,</span> <span class="n">force_remount</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout_ms</span><span class="o">=</span><span class="mi">120000</span><span class="p">,</span> <span class="n">readonly</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">102</span><span class="w">   </span><span class="sd">&quot;&quot;&quot;Mount your Google Drive at the specified mountpoint path.&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">103</span>   <span class="k">return</span> <span class="n">_mount</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">104</span>       <span class="n">mountpoint</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">105</span>       <span class="n">force_remount</span><span class="o">=</span><span class="n">force_remount</span><span class="p">,</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/drive.py</span> in <span class="ni">_mount</span><span class="nt">(mountpoint, force_remount, timeout_ms, ephemeral, readonly)</span>
+<span class="g g-Whitespace">    </span><span class="mi">130</span>   <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">131</span>   <span class="k">if</span> <span class="n">ephemeral</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">132</span>     <span class="n">_message</span><span class="o">.</span><span class="n">blocking_request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">133</span>         <span class="s1">&#39;request_auth&#39;</span><span class="p">,</span> <span class="n">request</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;authType&#39;</span><span class="p">:</span> <span class="s1">&#39;dfs_ephemeral&#39;</span><span class="p">},</span> <span class="n">timeout_sec</span><span class="o">=</span><span class="kc">None</span>
+<span class="g g-Whitespace">    </span><span class="mi">134</span>     <span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_message.py</span> in <span class="ni">blocking_request</span><span class="nt">(request_type, request, timeout_sec, parent)</span>
+<span class="g g-Whitespace">    </span><span class="mi">174</span>       <span class="n">request_type</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">expect_reply</span><span class="o">=</span><span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">175</span>   <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">176</span>   <span class="k">return</span> <span class="n">read_reply_from_input</span><span class="p">(</span><span class="n">request_id</span><span class="p">,</span> <span class="n">timeout_sec</span><span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.10/dist-packages/google/colab/_message.py</span> in <span class="ni">read_reply_from_input</span><span class="nt">(message_id, timeout_sec)</span>
+<span class="g g-Whitespace">     </span><span class="mi">94</span>     <span class="n">reply</span> <span class="o">=</span> <span class="n">_read_next_input_message</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span>     <span class="k">if</span> <span class="n">reply</span> <span class="o">==</span> <span class="n">_NOT_READY</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reply</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">96</span>       <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.025</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>       <span class="k">continue</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>     <span class="k">if</span> <span class="p">(</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> /content/drive/MyDrive/psd a
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/drive/MyDrive/psd a
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">librosa</span>
+<span class="kn">import</span> <span class="nn">librosa.display</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="k">as</span> <span class="nn">stats</span>
+
+
+<span class="c1"># Membaca file audio</span>
+<span class="n">audio_file</span> <span class="o">=</span> <span class="s2">&quot;audio1.wav&quot;</span>  <span class="c1"># Gantilah dengan lokasi file audio Anda</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_file</span><span class="p">)</span>
+
+<span class="c1"># Membaca file audio</span>
+<span class="n">audio_file</span> <span class="o">=</span> <span class="s2">&quot;audio2.wav&quot;</span>  <span class="c1"># Gantilah dengan lokasi file audio Anda</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_file</span><span class="p">)</span>
+
+<span class="c1"># Membaca file audio</span>
+<span class="n">audio_file</span> <span class="o">=</span> <span class="s2">&quot;audio3.wav&quot;</span>  <span class="c1"># Gantilah dengan lokasi file audio Anda</span>
+<span class="n">z</span><span class="p">,</span> <span class="n">sr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Menghitung Zero-Crossing Rate</span>
+<span class="n">zcr</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">zcr</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">zcr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[0.16259766 0.19580078 0.23339844 0.14013672 0.12646484 0.12353516
+  0.11767578 0.125      0.13427734 0.13867188 0.13769531 0.140625
+  0.13427734 0.14306641 0.15380859 0.16650391 0.18115234 0.17773438
+  0.17431641 0.15966797 0.15185547 0.14892578 0.14306641 0.140625
+  0.13623047 0.13427734 0.1328125  0.13378906 0.12792969 0.12207031
+  0.11474609 0.11181641 0.11132812 0.11132812 0.11621094 0.12011719
+  0.12890625 0.13232422 0.13378906 0.13720703 0.13232422 0.125
+  0.1328125  0.12939453 0.13964844 0.15625    0.15771484 0.15820312
+  0.14941406 0.14355469 0.14648438 0.15087891 0.1640625  0.17089844
+  0.16845703 0.16162109 0.15136719 0.14160156 0.13476562 0.14160156
+  0.14599609 0.15429688 0.15332031 0.15234375 0.14404297 0.14404297
+  0.1484375  0.14404297 0.14648438 0.13964844 0.13671875 0.13818359
+  0.13427734 0.13574219 0.13330078 0.12841797 0.12597656 0.11474609
+  0.10546875 0.10693359 0.10400391 0.10595703 0.11279297 0.11474609
+  0.12207031 0.13085938 0.140625   0.14550781 0.14794922 0.15039062
+  0.14599609 0.14501953 0.14453125 0.14111328 0.13623047 0.13037109
+  0.12988281 0.13232422 0.13085938 0.13232422 0.13378906 0.12939453
+  0.12988281 0.1328125  0.13037109 0.13427734 0.13623047 0.13378906
+  0.12939453 0.12207031 0.11621094 0.10498047 0.10107422 0.09814453
+  0.10449219 0.12060547 0.12207031 0.12841797 0.13378906 0.12841797
+  0.13476562 0.13330078 0.12060547 0.11035156 0.10302734 0.10058594
+  0.10595703 0.11572266 0.12353516 0.12548828 0.13085938 0.12597656
+  0.12890625 0.12988281 0.12353516 0.12353516 0.11474609 0.11425781
+  0.12060547 0.125      0.12939453 0.12939453 0.12988281 0.13232422
+  0.13183594 0.13037109 0.12548828 0.12939453 0.14013672 0.14746094
+  0.15283203 0.14794922 0.14355469 0.14550781 0.14550781 0.14160156
+  0.13085938 0.12402344 0.11523438 0.11376953 0.11523438 0.11328125
+  0.12109375 0.13232422 0.13769531 0.14990234 0.15234375 0.14257812
+  0.13964844 0.12988281 0.12109375 0.12646484 0.12792969 0.13769531
+  0.14013672 0.13085938 0.12988281 0.12304688 0.12597656 0.12939453
+  0.14013672 0.13427734 0.13037109 0.1328125  0.12353516 0.12841797
+  0.12695312 0.12207031 0.12451172 0.13183594 0.13916016 0.15234375
+  0.15478516 0.14648438 0.14648438 0.1484375  0.14501953 0.14306641
+  0.13769531 0.12792969 0.12402344 0.1328125  0.13085938 0.12402344
+  0.13085938 0.11376953 0.11523438 0.12158203 0.11181641 0.12158203
+  0.12402344 0.12109375 0.12060547 0.11230469 0.11083984 0.10839844
+  0.11621094 0.12744141 0.12304688 0.12109375 0.12304688 0.12109375
+  0.12353516 0.13037109 0.12792969 0.12207031 0.12011719 0.11865234
+  0.11474609 0.11767578 0.12207031 0.12695312 0.12988281 0.13623047
+  0.13330078 0.1328125  0.14941406 0.14355469 0.14697266 0.15136719
+  0.14160156 0.14550781 0.1484375  0.14160156 0.13574219 0.14160156
+  0.13769531 0.14111328 0.14208984 0.13330078 0.1328125  0.13525391
+  0.14208984 0.14550781 0.15576172 0.14892578 0.13867188 0.13574219
+  0.13134766 0.12060547 0.11474609 0.11083984 0.09912109 0.09912109
+  0.10107422 0.09863281 0.10351562 0.11767578 0.125      0.12695312
+  0.125      0.11962891 0.11230469 0.11328125 0.11669922 0.12304688
+  0.12939453 0.1328125  0.1328125  0.12451172 0.12109375 0.12402344
+  0.12109375 0.13134766 0.12841797 0.125      0.12988281 0.12353516
+  0.12597656 0.12402344 0.12255859 0.11962891 0.11865234 0.12109375
+  0.1171875  0.12060547 0.12304688 0.11474609 0.11132812 0.11132812
+  0.10742188 0.11865234 0.12109375 0.11816406 0.11865234 0.11621094
+  0.12207031 0.12402344 0.12988281 0.13623047 0.13720703 0.14013672
+  0.14550781 0.13525391 0.13867188 0.13720703 0.12939453 0.13525391
+  0.13330078 0.13525391 0.14306641 0.14501953 0.14501953 0.14453125
+  0.14160156 0.13671875 0.13574219 0.1328125  0.13085938 0.13671875
+  0.12988281 0.12939453 0.12597656 0.11865234 0.12548828 0.125
+  0.13330078 0.14013672 0.14306641 0.15332031 0.1484375  0.15136719
+  0.15625    0.15380859 0.16210938 0.15917969 0.14599609 0.13769531
+  0.12695312 0.12109375 0.12353516 0.12646484 0.13037109 0.13769531
+  0.14355469 0.14794922 0.1484375  0.15039062 0.14746094 0.14746094
+  0.14453125 0.14355469 0.1484375  0.15136719 0.15722656 0.16064453
+  0.15771484 0.15234375 0.15234375 0.14501953 0.14355469 0.13623047
+  0.13720703 0.13476562 0.13476562 0.14794922 0.14013672 0.14355469
+  0.14257812 0.13525391 0.13916016 0.12890625 0.12988281 0.12890625
+  0.12988281 0.13525391 0.13085938 0.13134766 0.12744141 0.12451172
+  0.12646484 0.12109375 0.12646484 0.1328125  0.12890625 0.13525391
+  0.13183594 0.12988281 0.13085938 0.13330078 0.13720703 0.14794922
+  0.15576172 0.15185547 0.15234375 0.14501953 0.14013672 0.13818359
+  0.13964844 0.12988281 0.12939453 0.13427734 0.12792969 0.140625
+  0.14599609 0.14404297 0.14013672 0.13867188 0.12744141 0.14013672
+  0.14257812 0.13964844 0.14990234 0.13818359 0.13671875 0.13964844
+  0.13623047 0.12988281 0.12548828 0.12060547 0.12109375 0.12744141
+  0.12597656 0.12451172 0.11914062 0.11523438 0.12451172 0.12646484
+  0.12744141 0.12597656 0.12597656 0.12060547 0.11914062 0.12060547
+  0.10986328 0.109375   0.11132812 0.10888672 0.12207031 0.12792969
+  0.13134766 0.1328125  0.12841797 0.12304688 0.11767578 0.12060547
+  0.11621094 0.11328125 0.11523438 0.11425781 0.11865234 0.12255859
+  0.12548828 0.11914062 0.11230469 0.11035156 0.10302734 0.10009766
+  0.10107422 0.09863281 0.09863281 0.09912109 0.09716797 0.10253906
+  0.12011719 0.13183594 0.14111328 0.14453125 0.13769531 0.12890625
+  0.12402344 0.12060547 0.12011719 0.12158203 0.12060547 0.12255859
+  0.12304688 0.12890625 0.13427734 0.13818359 0.13525391 0.13671875
+  0.13964844 0.1328125  0.13574219 0.1328125  0.12988281 0.13623047
+  0.14208984 0.14501953 0.15332031 0.14941406 0.14453125 0.14697266
+  0.140625   0.14160156 0.14160156 0.140625   0.14160156 0.19189453
+  0.18066406 0.14306641]]
+(1, 512)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Menampilkan grafik ZCR</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">librosa</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">waveshow</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Waveform&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">librosa</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">specshow</span><span class="p">(</span><span class="n">zcr</span><span class="p">,</span> <span class="n">sr</span><span class="o">=</span><span class="n">sr</span><span class="p">,</span> <span class="n">x_axis</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%2.0f</span><span class="s2"> dB&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Zero-Crossing Rate (ZCR)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d56860ae628e4d0dfe68bb18e454483aaaa2d7c7aee1b09aad4cb8a1eb0cb44c.png" src="_images/d56860ae628e4d0dfe68bb18e454483aaaa2d7c7aee1b09aad4cb8a1eb0cb44c.png" />
+<img alt="_images/9c6d13f98976fdd9ee20b7eba3d29d2963f6874a8b5de2685aa272687572f475.png" src="_images/9c6d13f98976fdd9ee20b7eba3d29d2963f6874a8b5de2685aa272687572f475.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">librosa</span>
+<span class="n">audio_file</span> <span class="o">=</span> <span class="s2">&quot;audio1.wav&quot;</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_file</span><span class="p">)</span>
+<span class="n">zero_crossings</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">mean_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">median_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">std_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">skewness_zcr</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">kurtosis_zcr</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Zero-Crossing Rate: </span><span class="si">{</span><span class="n">mean_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median Zero-Crossing Rate: </span><span class="si">{</span><span class="n">median_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Deviation of Zero-Crossing Rate: </span><span class="si">{</span><span class="n">std_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skewness Zero-Crossing Rate: </span><span class="si">{</span><span class="n">skewness_zcr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Kurtosis Zero-Crossing Rate: </span><span class="si">{</span><span class="n">kurtosis_zcr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean Zero-Crossing Rate: 0.022295977618243243
+Median Zero-Crossing Rate: 0.01171875
+Standard Deviation of Zero-Crossing Rate: 0.02245789951982053
+Skewness Zero-Crossing Rate: 1.534646039803422
+Kurtosis Zero-Crossing Rate: 0.8205739192008354
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">librosa</span>
+<span class="n">audio_file</span> <span class="o">=</span> <span class="s2">&quot;audio2.wav&quot;</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_file</span><span class="p">)</span>
+<span class="n">zero_crossings</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">mean_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">median_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">std_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">skewness_zcr</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">kurtosis_zcr</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Zero-Crossing Rate: </span><span class="si">{</span><span class="n">mean_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median Zero-Crossing Rate: </span><span class="si">{</span><span class="n">median_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Deviation of Zero-Crossing Rate: </span><span class="si">{</span><span class="n">std_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skewness Zero-Crossing Rate: </span><span class="si">{</span><span class="n">skewness_zcr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Kurtosis Zero-Crossing Rate: </span><span class="si">{</span><span class="n">kurtosis_zcr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean Zero-Crossing Rate: 0.13221263885498047
+Median Zero-Crossing Rate: 0.13134765625
+Standard Deviation of Zero-Crossing Rate: 0.01527410522315829
+Skewness Zero-Crossing Rate: 0.8751086541589257
+Kurtosis Zero-Crossing Rate: 4.273626441238802
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">librosa</span>
+<span class="n">audio_file</span> <span class="o">=</span> <span class="s2">&quot;audio3.wav&quot;</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">sample_rate</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">audio_file</span><span class="p">)</span>
+<span class="n">zero_crossings</span> <span class="o">=</span> <span class="n">librosa</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">zero_crossing_rate</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">mean_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">median_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">std_zero_crossings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">)</span>
+<span class="n">skewness_zcr</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">kurtosis_zcr</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">kurtosis</span><span class="p">(</span><span class="n">zero_crossings</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mean Zero-Crossing Rate: </span><span class="si">{</span><span class="n">mean_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median Zero-Crossing Rate: </span><span class="si">{</span><span class="n">median_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Standard Deviation of Zero-Crossing Rate: </span><span class="si">{</span><span class="n">std_zero_crossings</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skewness Zero-Crossing Rate: </span><span class="si">{</span><span class="n">skewness_zcr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Kurtosis Zero-Crossing Rate: </span><span class="si">{</span><span class="n">kurtosis_zcr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean Zero-Crossing Rate: 0.133019047289823
+Median Zero-Crossing Rate: 0.0654296875
+Standard Deviation of Zero-Crossing Rate: 0.19731362360864052
+Skewness Zero-Crossing Rate: 2.6327599997082234
+Kurtosis Zero-Crossing Rate: 5.455838547895601
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;audio1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span><span class="s1">&#39;0.022295977618243243&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span><span class="s1">&#39;0.01171875&#39;</span><span class="p">,</span> <span class="s1">&#39;std deviasi&#39;</span><span class="p">:</span><span class="s1">&#39;0.02245789951982053&#39;</span><span class="p">,</span> <span class="s1">&#39;skewness&#39;</span><span class="p">:</span><span class="s1">&#39;1.534646039803422&#39;</span><span class="p">,</span> <span class="s1">&#39;kurtosis&#39;</span><span class="p">:</span><span class="s1">&#39;0.8205739192008354&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;Tertawa&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;audio2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span><span class="s1">&#39;0.13221263885498047&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span><span class="s1">&#39;0.13134765625&#39;</span><span class="p">,</span> <span class="s1">&#39;std deviasi&#39;</span><span class="p">:</span><span class="s1">&#39;0.01527410522315829&#39;</span><span class="p">,</span> <span class="s1">&#39;skewness&#39;</span><span class="p">:</span><span class="s1">&#39;0.8751086541589257&#39;</span><span class="p">,</span> <span class="s1">&#39;kurtosis&#39;</span><span class="p">:</span><span class="s1">&#39;4.273626441238802&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;Marah&#39;</span><span class="p">},</span>
+        <span class="s1">&#39;audio3&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span><span class="s1">&#39;0.3228678385416667&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span><span class="s1">&#39;0.147216796875&#39;</span><span class="p">,</span> <span class="s1">&#39;std deviasi&#39;</span><span class="p">:</span><span class="s1">&#39;0.28132463618706527&#39;</span><span class="p">,</span> <span class="s1">&#39;skewness&#39;</span><span class="p">:</span><span class="s1">&#39;2.6327599997082234&#39;</span><span class="p">,</span> <span class="s1">&#39;kurtosis&#39;</span><span class="p">:</span><span class="s1">&#39;5.455838547895601&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;Marah&#39;</span><span class="p">}}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-e4396db4-c058-4e9c-a869-66dbbd521127" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>audio1</th>
+      <th>audio2</th>
+      <th>audio3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>mean</th>
+      <td>0.022295977618243243</td>
+      <td>0.13221263885498047</td>
+      <td>0.3228678385416667</td>
+    </tr>
+    <tr>
+      <th>median</th>
+      <td>0.01171875</td>
+      <td>0.13134765625</td>
+      <td>0.147216796875</td>
+    </tr>
+    <tr>
+      <th>std deviasi</th>
+      <td>0.02245789951982053</td>
+      <td>0.01527410522315829</td>
+      <td>0.28132463618706527</td>
+    </tr>
+    <tr>
+      <th>skewness</th>
+      <td>1.534646039803422</td>
+      <td>0.8751086541589257</td>
+      <td>2.6327599997082234</td>
+    </tr>
+    <tr>
+      <th>kurtosis</th>
+      <td>0.8205739192008354</td>
+      <td>4.273626441238802</td>
+      <td>5.455838547895601</td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td>Tertawa</td>
+      <td>Marah</td>
+      <td>Marah</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-e4396db4-c058-4e9c-a869-66dbbd521127')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-e4396db4-c058-4e9c-a869-66dbbd521127 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-e4396db4-c058-4e9c-a869-66dbbd521127');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+<div id="df-470a9429-3ff6-4167-a2d9-4d0f92fb5748">
+  <button class="colab-df-quickchart" onclick="quickchart('df-470a9429-3ff6-4167-a2d9-4d0f92fb5748')"
+            title="Suggest charts."
+            style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+  </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+  <script>
+    async function quickchart(key) {
+      const quickchartButtonEl =
+        document.querySelector('#' + key + ' button');
+      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+      quickchartButtonEl.classList.add('colab-df-spinner');
+      try {
+        const charts = await google.colab.kernel.invokeFunction(
+            'suggestCharts', [key], {});
+      } catch (error) {
+        console.error('Error during call to suggestCharts:', error);
+      }
+      quickchartButtonEl.classList.remove('colab-df-spinner');
+      quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+    }
+    (() => {
+      let quickchartButtonEl =
+        document.querySelector('#df-470a9429-3ff6-4167-a2d9-4d0f92fb5748 button');
+      quickchartButtonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+    })();
+  </script>
+</div>
+    </div>
+  </div>
+</div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Menyimpan DataFrame ke dalam file CSV</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;zero-crosing-rate.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Zero_Crossing_Rate_21_160_Qoid_Rif%27at.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Klasifikasi Data Audio Menggunakan Zero Crossing Rate</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="21_160_Pertemuan4.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Klasifikasi 2800 Data Audio Torronto</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Jupyter Book Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+    <p class="copyright">
+    
+      © 21-160 Qoid Rif'at
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
