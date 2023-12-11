@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.tree import ExtraTreeClassifier  # Mengganti RandomForestClassifier dengan ExtraTreesClassifier
+from sklearn.ensemble import ExtraTreesClassifier  # Mengganti RandomForestClassifier dengan ExtraTreesClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import streamlit as st
