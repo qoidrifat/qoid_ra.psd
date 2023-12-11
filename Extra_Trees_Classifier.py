@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import streamlit as st
@@ -21,7 +22,7 @@ y = wc_data['Channel']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Buat model Extra Trees Classifier
-et_model = (n_estimators=100, random_state=42)
+et_model = ExtraTreesClassifier (n_estimators=100, random_state=42)
 
 # Latih model pada data pelatihan
 et_model.fit(X_train, y_train)
