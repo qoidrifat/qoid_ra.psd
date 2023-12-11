@@ -1,5 +1,4 @@
 import pandas as pd
-import ExtraTreesClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import streamlit as st
